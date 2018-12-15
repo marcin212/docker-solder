@@ -7,11 +7,11 @@ More information available at: <http://docs.solder.io/>
 What is the purpose of this container? First and foremost it's to be simple to configure. It should not require a PHD to be able to setup solder, yet there are quite a few gotchas to be aware of. There are quite a few solder containers in existence, but I have found that they either lack documentation, or have some other weird way of being setup that does not follow the official recommendations.
 
 # Quickstart
-This command starts your solder container for you. You only need to change the environment variables.
+This command starts your solder container for you. You only need to change the environment variables. If you
 
 ```sh
 docker run -d --name=solder \
-    -p 80:80 -p 8080:8080 \
+    -p 80:80 -p 8080:8080 -p 443:443 -p 8443:8443 \
     -v /data/docker/solder/database:/var/lib/postgresql/data \
     -v /data/docker/solder/repo:/var/www/repo.solder \
     -v /data/docker/solder/storage:/var/www/technicsolder/app/storage \
