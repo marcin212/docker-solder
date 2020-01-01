@@ -1,7 +1,7 @@
 FROM alpine:latest
 
 # Download and instsall dependencies
-RUN apk --no-cache add postgresql nginx ca-certificates wget curl \
+RUN apk --no-cache add nginx ca-certificates wget curl \
         php7-cli php7-curl php7-mcrypt php7-apcu php7-fpm \
         php7-sqlite3 php7-json php7-phar php7-iconv php7 \
         php7-mbstring php7-xml php7-fileinfo php7-openssl \
@@ -43,8 +43,6 @@ ENV PGDATA=/var/lib/postgresql/data \
     SOLDER_HOST=solder.app \
     # Host used when connection to repo
     REPO_HOST=repo.app\
-    # Password for postgres
-    POSTGRES_PASSWORD=postgres\
     REPO_USER=solder\
     REPO_PASSWORD=solder
 
