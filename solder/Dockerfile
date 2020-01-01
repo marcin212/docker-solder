@@ -62,18 +62,6 @@ COPY ./add /
 RUN chmod +x /var/scripts/setup.sh && \
     chmod +x /var/scripts/setup-postgres.sh
 
-# Make sure the outside can see solder
-EXPOSE \
-    # Solder over http
-    80 \
-    # Solder over https
-    443 \
-    # Postgres (Mostly available for debugging)
-    5432 \
-    # GFS
-    8080
-
-
 # Actually configure solder
 ENTRYPOINT ["/usr/local/bin/gpm"]
 CMD ["-config", "/var/gpm-config.json"]
