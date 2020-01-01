@@ -24,8 +24,8 @@ services:
       - REPO_USER=username
       - REPO_PASSWORD=password
     ports:
-      - "80:80"
-      - "8080:8080"
+      - 80:80
+      - 8080:8080
 
 volumes:
   postgres_data:
