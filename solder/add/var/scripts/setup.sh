@@ -32,7 +32,7 @@ sed -i.bak -E "s!('mirror_url' => )'(.+)'!\1'$REPO_HOST'!" app/config/solder.php
 # Setup the solder app
 sed -i.bak -E "s!('url' => )'http://solder\.test'!\1'$repoUrl'!" app/config/app.php
 # Hack for php7.1 not liking mcrypt
-#sed -i.bak -E "2s/\s?/error_reporting(E_ALL ^ E_DEPRECATED);/" app/config/app.php
+sed -i.bak -E "2s/\s?/error_reporting(E_ALL ^ E_DEPRECATED);/" app/config/app.php
 # enable debug mode by default
 sed -i.bak "s|'debug' => false|'debug' => true|g" /var/www/technicsolder/app/config/app.php
 
