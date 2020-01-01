@@ -6,21 +6,21 @@ RUN apk --no-cache add postgresql nginx ca-certificates wget curl \
         php7-sqlite3 php7-json php7-phar php7-iconv php7 \
         php7-mbstring php7-xml php7-fileinfo php7-openssl \
         php7-dom php7-tokenizer php7-ctype php7-pdo php7-pgsql \ 
-        php7-pdo_pgsql php7-gd && \
-    # Install composer
-    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+        php7-pdo_pgsql php7-gd
+# Install composer
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
     php -r "if (hash_file('SHA384', 'composer-setup.php') === '669656bab3166a7aff8a7506b8cb2d1c292f042046c5a994c43155c0be6190fa0355160742ab2e1c88d40d5be660b410') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
     php composer-setup.php && \
-    php -r "unlink('composer-setup.php');" && \
-    # Add gosu for easier sudo management
-    curl -o /usr/local/bin/gosu -sSL "https://github.com/tianon/gosu/releases/download/1.2/gosu-amd64" && \
-    chmod +x /usr/local/bin/gosu && \
-    # Download and extract solder
-    wget http://github.com/TechnicPack/TechnicSolder/archive/master.tar.gz -O - | tar -xzf - -C /var/www && \
-    # Better file naming
-    mv var/www/TechnicSolder-master var/www/technicsolder && \
-    # Install solder dependencies (We have to run it twice, as it sometimes fails just because)
-    cd /var/www/technicsolder && \
+    php -r "unlink('composer-setup.php');"
+# Add gosu for easier sudo management
+RUN curl -o /usr/local/bin/gosu -sSL "https://github.com/tianon/gosu/releases/download/1.2/gosu-amd64" && \
+    chmod +x /usr/local/bin/gosu
+# Download and extract solder
+RUN wget http://github.com/TechnicPack/TechnicSolder/archive/master.tar.gz -O - | tar -xzf - -C /var/www
+# Better file naming
+RUN mv var/www/TechnicSolder-master var/www/technicsolder
+# Install solder dependencies (We have to run it twice, as it sometimes fails just because)
+RUN cd /var/www/technicsolder && \
     php /composer.phar install --no-dev --no-interaction && \
     php /composer.phar install --no-dev --no-interaction && \
     chown -R nginx . && \
@@ -28,11 +28,11 @@ RUN apk --no-cache add postgresql nginx ca-certificates wget curl \
     chmod -R 777 /var/www/technicsolder/public && \
     cd /
 
-    # Add gpm for easier file upload
+# Add gpm for easier file upload
 RUN curl -o /usr/local/bin/gpm -sSL "https://github.com/zlepper/gpm/releases/download/1.0.1/gpm-1.0.1-linux-x64" && \
     chmod +x /usr/local/bin/gpm 
 
-    # Add gfs for easier file upload
+# Add gfs for easier file upload
 RUN curl -o /usr/local/bin/gfs -sSL "https://github.com/zlepper/gfs/releases/download/0.0.4/gfs-linux-x64" && \
     chmod +x /usr/local/bin/gfs 
 
