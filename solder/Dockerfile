@@ -18,7 +18,9 @@ RUN curl -o /usr/local/bin/gosu -sSL "https://github.com/tianon/gosu/releases/do
 # Download and extract solder
 RUN wget http://github.com/TechnicPack/TechnicSolder/archive/master.tar.gz -O - | tar -xzf - -C /var/www
 # Better file naming
-RUN mv var/www/TechnicSolder-master var/www/technicsolder
+RUN mv /var/www/TechnicSolder-master /var/www/technicsolder
+
+RUN mv /var/www/technicsolder/app/config-sample /var/www/technicsolder/app/config
 # Install solder dependencies (We have to run it twice, as it sometimes fails just because)
 RUN cd /var/www/technicsolder && \
     php /composer.phar install --no-dev --no-interaction && \
