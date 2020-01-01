@@ -1,6 +1,5 @@
 FROM alpine:latest
 
-
 # Download and instsall dependencies
 RUN apk --no-cache add postgresql nginx ca-certificates wget curl \
         php7-cli php7-curl php7-mcrypt php7-apcu php7-fpm \
@@ -60,7 +59,7 @@ VOLUME /var/lib/postgresql/data \
 
 
 # Copy setup scripts
-ADD add/ /
+ADD ../add /
 
 RUN chmod +x /var/scripts/setup.sh && \
     chmod +x /var/scripts/setup-postgres.sh
