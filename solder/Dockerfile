@@ -18,6 +18,7 @@ RUN wget http://github.com/TechnicPack/TechnicSolder/archive/master.tar.gz -O - 
 # Better file naming
 RUN mv ./TechnicSolder-master ./technicsolder
 
+# Create default configs.
 RUN mv ./technicsolder/app/config-sample ./technicsolder/app/config
 
 # Install solder dependencies.
