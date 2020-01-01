@@ -20,7 +20,7 @@ RUN mv ./TechnicSolder-master ./technicsolder
 
 RUN mv ./technicsolder/app/config-sample ./technicsolder/app/config
 
-# Install solder dependencies (We have to run it twice, as it sometimes fails just because)
+# Install solder dependencies.
 WORKDIR /var/www/technicsolder/
 # Install composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
