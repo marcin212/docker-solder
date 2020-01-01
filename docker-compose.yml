@@ -1,6 +1,12 @@
 version: '3.7'
 
 services:
+  postgres:
+    image: postgres:12-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.configs/postgres/.env
   solder:
     build: ./solder
     image: leonime/solder
@@ -18,4 +24,11 @@ services:
     ports:
       - "80:80"
       - "8080:8080"
-      
+
+volumes:
+  postgres_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/postgres/data
+      o: bind
