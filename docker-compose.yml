@@ -4,7 +4,7 @@ services:
   solder:
     image: zlepper/solder
     container_name: solder
-    restart: unless-stopped
+    restart: on-failure
     volumes:
       - /data/docker/solder/database:/var/lib/postgresql/data
       - /data/docker/solder/repo:/var/www/repo.solder
