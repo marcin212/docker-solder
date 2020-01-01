@@ -15,9 +15,9 @@ services:
     env_file:
       - ./.configs/solder/.env
     volumes:
-      - /data/docker/solder/database:/var/lib/postgresql/data
-      - /data/docker/solder/repo:/var/www/repo.solder
-      - /data/docker/solder/storage:/var/www/technicsolder/app/storage
+      - solder_repo:/var/www/repo.solder
+      - solder_storage:/var/www/technicsolder/app/storage
+      - solder_public:/var/www/technicsolder/public/storage
     environment:
       - SOLDER_HOST=solder.example.com
       - REPO_HOST=repo.example.com
@@ -33,4 +33,22 @@ volumes:
     driver_opts:
       type: none
       device: ${PWD}/.data/postgres/data
+      o: bind
+  solder_public:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/solder/public
+      o: bind
+  solder_repo:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/solder/repo
+      o: bind
+  solder_storage:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/solder/storage
       o: bind
