@@ -37,10 +37,8 @@ RUN curl -o /usr/local/bin/gfs -sSL "https://github.com/zlepper/gfs/releases/dow
     chmod +x /usr/local/bin/gfs 
 
 # Allow using an external storage for postgres
-ENV PGDATA=/var/lib/postgresql/data \
-    LANG=en_US.utf8\
-    # Host used when connection to solder
-    SOLDER_HOST=solder.app \
+# Host used when connection to solder
+ENV SOLDER_HOST=solder.app \
     # Host used when connection to repo
     REPO_HOST=repo.app\
     REPO_USER=solder\
