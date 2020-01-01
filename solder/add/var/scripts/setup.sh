@@ -22,19 +22,19 @@ echo "Configuring solder"
 cd /var/www/technicsolder || exit
 # Change to use postgres for the database
 sed -i.bak -E "s!('default' => )'\w+'!\1'pgsql'!g" app/config/database.php
+sed -i.bak -E "s!('host'     => )'\w+'!\1'$POSTGRES_HOST'!" app/config/database.php
 sed -i.bak -E "s!('database' => )'\w+'!\1'$POSTGRES_DB'!" app/config/database.php
 sed -i.bak -E "s!('username' => )'\w+'!\1'$POSTGRES_USER'!" app/config/database.php
 sed -i.bak -E "s!('password' => )''!\1'$POSTGRES_PASSWORD'!" app/config/database.php
 # Setup file storage
-sed -i.bak -E "s!('repo_location' => )''!\1'/var/www/repo.solder/'!" app/config/solder.php
-sed -i.bak -E "s!('mirror_url' => )''!\1'$REPO_HOST'!" app/config/solder.php
+sed -i.bak -E "s!('repo_location' => )'(.+)'!\1'/var/www/repo.solder/'!" app/config/solder.php
+sed -i.bak -E "s!('mirror_url' => )'(.+)'!\1'$REPO_HOST'!" app/config/solder.php
 # Setup the solder app
-sed -i.bak -E "s!('url' => )'http://solder\.app:8000'!\1'$repoUrl'!" app/config/app.php
+sed -i.bak -E "s!('url' => )'http://solder\.test'!\1'$repoUrl'!" app/config/app.php
 # Hack for php7.1 not liking mcrypt
-sed -i.bak -E "2s/\s?/error_reporting(E_ALL ^ E_DEPRECATED);/" app/config/app.php
+#sed -i.bak -E "2s/\s?/error_reporting(E_ALL ^ E_DEPRECATED);/" app/config/app.php
 # enable debug mode by default
 sed -i.bak "s|'debug' => false|'debug' => true|g" /var/www/technicsolder/app/config/app.php
-
 
 chmod -R 777 ./app/storage
 chmod -R 777 /var/www/technicsolder/public
