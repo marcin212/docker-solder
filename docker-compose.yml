@@ -12,6 +12,8 @@ services:
     image: leonime/solder
     container_name: solder
     restart: on-failure
+    env_file:
+      - ./.configs/solder/.env
     volumes:
       - /data/docker/solder/database:/var/lib/postgresql/data
       - /data/docker/solder/repo:/var/www/repo.solder
