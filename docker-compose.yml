@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   solder:
-    image: zlepper/solder
+    image: leonime/solder
     container_name: solder
     restart: on-failure
     volumes:
