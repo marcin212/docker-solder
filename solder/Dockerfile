@@ -49,8 +49,7 @@ ENV SOLDER_HOST=solder.app \
 # Copy setup scripts
 COPY ./add /
 
-RUN chmod +x /var/scripts/setup.sh && \
-    chmod +x /var/scripts/setup-postgres.sh
+RUN chmod +x /var/scripts/setup.sh
 
 # Actually configure solder
 ENTRYPOINT ["/usr/local/bin/gpm"]

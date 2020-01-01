@@ -1,22 +1,12 @@
 [
     {
-        "name": "setup-postgres",
-        "command": "/bin/sh /var/scripts/setup-postgres.sh"
-    },
-    {
         "name": "setup",
-        "command": "/bin/sh /var/scripts/setup.sh",
-        "after": "setup-postgres"
+        "command": "/bin/sh /var/scripts/setup.sh"
     },
     {
         "name": "nginx",
         "command": "nginx",
         "after": "setup"
-    },
-    {
-        "name": "postgres",
-        "command": "gosu postgres postgres",
-        "after": "setup-postgres"
     },
     {
         "name": "gfs",
