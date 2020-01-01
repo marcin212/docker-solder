@@ -46,16 +46,6 @@ ENV PGDATA=/var/lib/postgresql/data \
     REPO_USER=solder\
     REPO_PASSWORD=solder
 
-# Storage location for postgres data
-VOLUME /var/lib/postgresql/data \
-    # Storage location for mod files
-    /var/www/repo.solder \
-    # Storage location for various special solder files
-    /var/www/technicsolder/app/storage \
-    # Storage location for another bunch of special solder files
-    /var/www/technicsolder/public/storage
-
-
 # Copy setup scripts
 COPY ./add /
 
