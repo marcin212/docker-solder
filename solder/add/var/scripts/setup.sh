@@ -8,8 +8,8 @@ until gosu postgres pg_isready 2>/dev/null; do
 done
 echo "Postgres started"
 
-: ${POSTGRES_USER:="postgres"}
-: ${POSTGRES_DB:=$POSTGRES_USER}
+: "${POSTGRES_USER:="postgres"}"
+: "${POSTGRES_DB:=$POSTGRES_USER}"
 
 mkdir /var/www/technicsolder/app/storage/meta \
       /var/www/technicsolder/app/storage/views \
@@ -21,10 +21,10 @@ mkdir /var/www/technicsolder/app/storage/meta \
       /var/www/technicsolder/app/storage/cache
 
 repoUrl="http://$REPO_HOST/"
-echo "$repoUrl" 
+echo "$repoUrl"
 ### Solder setup
 echo "Configuring solder"
-cd /var/www/technicsolder
+cd /var/www/technicsolder || exit
 # Change to use postgres for the database
 sed -i.bak -E "s!('default' => )'\w+'!\1'pgsql'!g" app/config/database.php
 sed -i.bak -E "s!('database' => )'\w+'!\1'$POSTGRES_DB'!" app/config/database.php
