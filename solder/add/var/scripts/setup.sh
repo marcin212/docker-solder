@@ -1,15 +1,10 @@
 #!/bin/sh
 
-echo "Waiting for postgres to start"
-sleepTime=5s
-until gosu postgres pg_isready 2>/dev/null; do
-  >&2 echo "Postgres is unavailable - sleeping for $sleepTime"
-  sleep $sleepTime
+printf "\n\033[1mWaiting for postgres to start\033[0m\n"
+while ! nc -z "$POSTGRES_HOST" "$POSTGRES_PORT"; do
+  sleep 1
 done
-echo "Postgres started"
-
-: "${POSTGRES_USER:="postgres"}"
-: "${POSTGRES_DB:=$POSTGRES_USER}"
+printf "PostgreSQL started\n\n"
 
 mkdir /var/www/technicsolder/app/storage/meta \
       /var/www/technicsolder/app/storage/views \
