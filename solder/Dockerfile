@@ -59,7 +59,7 @@ VOLUME /var/lib/postgresql/data \
 
 
 # Copy setup scripts
-ADD ../add /
+COPY ./add /
 
 RUN chmod +x /var/scripts/setup.sh && \
     chmod +x /var/scripts/setup-postgres.sh
