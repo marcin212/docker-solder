@@ -2,6 +2,7 @@ version: '3.7'
 
 services:
   solder:
+    build: ./solder
     image: leonime/solder
     container_name: solder
     restart: on-failure
