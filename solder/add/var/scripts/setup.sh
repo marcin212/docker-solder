@@ -45,7 +45,7 @@ php artisan --force migrate
 # Start php
 mkdir /var/run/php
 sed -i.bak "s|;*daemonize\s*=\s*yes|daemonize = yes|g" /etc/php7/php-fpm.conf
-sed -i.bak "s|;*listen\s*=\s*127.0.0.1:9000|listen = /var/run/php/php-fpm.sock|g" /etc/php7/php-fpm.d/www.conf
+sed -i.bak "s|;*listen\s*=\s*127.0.0.1:9000|listen = 0.0.0.0:9000|g" /etc/php7/php-fpm.d/www.conf
 sed -i.bak "s|;*listen.owner\s*=\s*nobody|listen.owner = nginx|g" /etc/php7/php-fpm.d/www.conf
 sed -i.bak "s|;*listen.group\s*=\s*nobody|listen.group = nginx|g" /etc/php7/php-fpm.d/www.conf
 /usr/sbin/php-fpm7
