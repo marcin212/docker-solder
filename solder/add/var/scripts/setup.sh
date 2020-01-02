@@ -46,22 +46,7 @@ php artisan --force migrate
 mkdir /var/run/php
 sed -i.bak "s|;*daemonize\s*=\s*yes|daemonize = yes|g" /etc/php7/php-fpm.conf
 sed -i.bak "s|;*listen\s*=\s*127.0.0.1:9000|listen = 0.0.0.0:9000|g" /etc/php7/php-fpm.d/www.conf
-sed -i.bak "s|;*listen.owner\s*=\s*nobody|listen.owner = nginx|g" /etc/php7/php-fpm.d/www.conf
-sed -i.bak "s|;*listen.group\s*=\s*nobody|listen.group = nginx|g" /etc/php7/php-fpm.d/www.conf
 /usr/sbin/php-fpm7
-
-# Setup solder website
-mkdir /var/log/nginx/technicsolder
-mkdir /run/nginx
-sed -i.bak -E "s!ENV_SOLDER_HOST!$SOLDER_HOST!g" /etc/nginx/conf.d/technicsolder.conf
-
-## Setup file repo
-# Create user
-mkdir /var/www/repo.solder
-chmod -R 777 /var/www/repo.solder
-# Setup file webserver
-mkdir /var/log/nginx/repo.solder
-sed -i.bak -E "s!ENV_REPO_HOST!$REPO_HOST!g" /etc/nginx/conf.d/repo.conf
 
 ## Setup GFS
 gfs -persist -username "$REPO_USER" -password "$REPO_PASSWORD" -serve /var/www/repo.solder

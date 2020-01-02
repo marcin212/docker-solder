@@ -1,0 +1,46 @@
+upstream solder {
+    server solder:9000;
+}
+
+server {
+    listen 80; #IPv4
+    listen [::]:80; #IPv6
+
+    # Host that will serve this project.
+    server_name solder.example.com;
+
+    # The location of our projects public directory.
+    root /var/www/technicsolder/public;
+    index index.php;
+
+    location / {
+        # URLs to attempt, including pretty ones
+        try_files   $uri $uri/ /index.php?$query_string;
+    }
+
+    # PHP FPM configuration.
+    location ~* \.php$ {
+        fastcgi_pass                    solder;
+        fastcgi_index                   index.php;
+        fastcgi_split_path_info         ^(.+\.php)(.*)$;
+        include                         fastcgi_params;
+        fastcgi_param PATH_INFO         $fastcgi_path_info;
+        fastcgi_param SCRIPT_FILENAME   $document_root$fastcgi_script_name;
+    }
+
+    # We don't need .ht files with nginx.
+    location ~ /\.ht {
+        deny all;
+    }
+
+    # Hide dot files/folders
+    location ~ .*/\. {
+        return 403;
+    }
+
+    # Set header expirations on per-project basis
+    location ~* \.(?:ico|css|js|jpe?g|JPG|png|svg|woff)$ {
+        expires 365d;
+
+    }
+}
