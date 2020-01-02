@@ -2,13 +2,14 @@ FROM alpine:latest
 
 WORKDIR /var/www/
 
-# Download and instsall dependencies
-RUN apk --no-cache add nginx ca-certificates wget curl \
-        php7-cli php7-curl php7-mcrypt php7-apcu php7-fpm \
-        php7-sqlite3 php7-json php7-phar php7-iconv php7 \
-        php7-mbstring php7-xml php7-fileinfo php7-openssl \
-        php7-dom php7-tokenizer php7-ctype php7-pdo php7-pgsql \ 
-        php7-pdo_pgsql php7-gd
+# Download and install dependencies
+RUN apk --no-cache add wget curl
+# Download and install Solder dependencies
+RUN apk --no-cache add php7-cli php7-curl php7-mcrypt php7-apcu php7-fpm \
+                       php7-sqlite3 php7-json php7-phar php7-iconv php7 \
+                       php7-mbstring php7-xml php7-fileinfo php7-openssl \
+                       php7-dom php7-tokenizer php7-ctype php7-pdo php7-pgsql \
+                       php7-pdo_pgsql php7-gd
 
 # Add gosu for easier sudo management
 RUN curl -o /usr/local/bin/gosu -sSL "https://github.com/tianon/gosu/releases/download/1.2/gosu-amd64" && \
