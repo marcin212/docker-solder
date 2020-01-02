@@ -11,9 +11,6 @@ RUN apk --no-cache add php7-cli php7-curl php7-mcrypt php7-apcu php7-fpm \
                        php7-dom php7-tokenizer php7-ctype php7-pdo php7-pgsql \
                        php7-pdo_pgsql php7-gd
 
-# Add gosu for easier sudo management
-RUN curl -o /usr/local/bin/gosu -sSL "https://github.com/tianon/gosu/releases/download/1.2/gosu-amd64" && \
-    chmod +x /usr/local/bin/gosu
 # Download and extract solder
 RUN wget http://github.com/TechnicPack/TechnicSolder/archive/master.tar.gz -O - | tar -xzf -
 # Better file naming
@@ -21,9 +18,10 @@ RUN mv ./TechnicSolder-master ./technicsolder
 
 # Create default configs.
 RUN mv ./technicsolder/app/config-sample ./technicsolder/app/config
+# Changed working directory so composer can work without trouble
+WORKDIR /var/www/technicsolder/
 
 # Install solder dependencies.
-WORKDIR /var/www/technicsolder/
 # Install composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
     php -r "if (hash_file('sha384', 'composer-setup.php') === 'baf1608c33254d00611ac1705c1d9958c817a1a33bce370c0595974b342601bd80b92a3f46067da89e3b06bff421f182') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
