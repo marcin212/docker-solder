@@ -17,7 +17,6 @@ services:
     volumes:
       - solder_repo:/var/www/repo.solder
       - solder_storage:/var/www/technicsolder/app/storage
-      - solder_php_run:/var/run/php/
       - solder_public:/var/www/technicsolder/public/
     environment:
       - SOLDER_HOST=solder.example.com
@@ -32,7 +31,6 @@ services:
       - ./.configs/nginx/solder.nginx:/etc/nginx/conf.d/solder.conf
       - ./.configs/nginx/repo.nginx:/etc/nginx/conf.d/repo.conf
       - ./.configs/nginx/up.nginx:/etc/nginx/conf.d/up.conf
-      - solder_php_run:/var/run/php/
       - solder_public:/var/www/technicsolder/public/
       - solder_repo:/var/www/repo.solder
     ports:
@@ -47,12 +45,6 @@ volumes:
     driver_opts:
       type: none
       device: ${PWD}/.data/postgres/data
-      o: bind
-  solder_php_run:
-    driver: local
-    driver_opts:
-      type: none
-      device: ${PWD}/.data/solder/php/run
       o: bind
   solder_public:
     driver: local
