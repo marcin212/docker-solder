@@ -29,9 +29,6 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
     php composer-setup.php && \
     php -r "unlink('composer-setup.php');"
 RUN php composer.phar install --no-dev --no-interaction
-RUN chown -R nginx .
-RUN chmod -R 777 ./app/storage
-RUN chmod -R 777 ./public
 
 # Add gpm for easier file upload
 RUN curl -o /usr/local/bin/gpm -sSL "https://github.com/zlepper/gpm/releases/download/1.0.1/gpm-1.0.1-linux-x64" && \
