@@ -15,6 +15,7 @@ RUN mv ./TechnicSolder-master ./technicsolder
 
 # Create default configs.
 RUN mv ./technicsolder/app/config-sample ./technicsolder/app/config
+
 # Changed working directory so composer can work without trouble
 WORKDIR /var/www/technicsolder/
 
@@ -32,13 +33,18 @@ ENV SOLDER_HOST=solder.app \
     REPO_HOST=repo.app\
     REPO_USER=solder\
     REPO_PASSWORD=solder
+
+# Copy scripts
 COPY ./entrypoint.sh .
 COPY ./php_config.sh .
 
+# Configure php-fpm
 RUN sh ./php_config.sh
 
 # create the app user
 RUN addgroup -S www-data && adduser -S www-data -G www-data
+
+# Change permisions.
 RUN chown -R www-data:www-data .
 
 # change to the app user
