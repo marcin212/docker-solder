@@ -20,7 +20,8 @@ RUN mv ./technicsolder/app/config-sample ./technicsolder/app/config
 WORKDIR /var/www/technicsolder/
 
 # Install solder dependencies.
-RUN composer install --no-dev --no-interaction
+RUN composer install --no-dev --no-interaction  --prefer-dist --no-ansi --no-scripts --optimize-autoloader
+RUN composer clearcache
 
 # Copy scripts
 COPY ./entrypoint.sh .
