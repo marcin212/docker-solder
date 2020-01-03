@@ -3,7 +3,7 @@ FROM alpine:latest
 WORKDIR /var/www/
 
 # Download and install dependencies
-RUN apk --no-cache add wget curl
+RUN apk --no-cache add wget
 # Download and install Solder dependencies
 RUN apk --no-cache add composer php7-cli php7-curl php7-mcrypt php7-apcu php7-fpm php7-sqlite3 php7-xml php7-fileinfo \
                        php7-dom php7-tokenizer php7-ctype php7-pdo php7-pgsql php7-pdo_pgsql php7-gd
