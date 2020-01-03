@@ -41,5 +41,8 @@ RUN sh ./php_config.sh
 RUN addgroup -S www-data && adduser -S www-data -G www-data
 RUN chown -R www-data:www-data .
 
+# change to the app user
+USER www-data
+
 # Actually configure solder
 ENTRYPOINT ["/var/www/technicsolder/entrypoint.sh"]
