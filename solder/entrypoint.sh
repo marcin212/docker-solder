@@ -10,7 +10,6 @@ repoUrl="http://$REPO_HOST/"
 echo "$repoUrl"
 ### Solder setup
 echo "Configuring solder"
-cd /var/www/technicsolder || exit
 # Change to use postgres for the database
 sed -i.bak -E "s!('default' => )'\w+'!\1'pgsql'!g" app/config/database.php
 sed -i.bak -E "s!('host'     => )'\w+'!\1'$POSTGRES_HOST'!" app/config/database.php
@@ -25,7 +24,7 @@ sed -i.bak -E "s!('url' => )'http://solder\.test'!\1'$repoUrl'!" app/config/app.
 # Hack for php7.1 not liking mcrypt
 sed -i.bak -E "2s/\s?/error_reporting(E_ALL ^ E_DEPRECATED);/" app/config/app.php
 # enable debug mode by default
-sed -i.bak "s|'debug' => false|'debug' => true|g" /var/www/technicsolder/app/config/app.php
+sed -i.bak "s|'debug' => false|'debug' => true|g" app/config/app.php
 
 echo "Running php artisan migrate:install"
 # Setup the database data
@@ -33,11 +32,7 @@ php artisan migrate:install
 echo "Running actual migration"
 php artisan --force migrate
 
-# Start php
-mkdir /var/run/php
-sed -i.bak "s|;*daemonize\s*=\s*yes|daemonize = yes|g" /etc/php7/php-fpm.conf
-sed -i.bak "s|;*listen\s*=\s*127.0.0.1:9000|listen = 0.0.0.0:9000|g" /etc/php7/php-fpm.d/www.conf
-/usr/sbin/php-fpm7
-
 ## Setup GFS
 gfs -persist -username "$REPO_USER" -password "$REPO_PASSWORD" -serve /var/www/repo.solder
+
+/usr/sbin/php-fpm7 -F

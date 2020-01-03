@@ -21,10 +21,6 @@ WORKDIR /var/www/technicsolder/
 # Install solder dependencies.
 RUN composer install --no-dev --no-interaction
 
-# Add gpm for easier file upload
-RUN curl -o /usr/local/bin/gpm -sSL "https://github.com/zlepper/gpm/releases/download/1.0.1/gpm-1.0.1-linux-x64" && \
-    chmod +x /usr/local/bin/gpm 
-
 # Add gfs for easier file upload
 RUN curl -o /usr/local/bin/gfs -sSL "https://github.com/zlepper/gfs/releases/download/0.0.4/gfs-linux-x64" && \
     chmod +x /usr/local/bin/gfs 
@@ -36,12 +32,11 @@ ENV SOLDER_HOST=solder.app \
     REPO_HOST=repo.app\
     REPO_USER=solder\
     REPO_PASSWORD=solder
+COPY ./entrypoint.sh .
 
 # Copy setup scripts
-COPY ./add /
 
-RUN chmod +x /var/scripts/setup.sh
+# create the app user
 
 # Actually configure solder
-ENTRYPOINT ["/usr/local/bin/gpm"]
-CMD ["-config", "/var/gpm-config.json"]
+ENTRYPOINT ["/var/www/technicsolder/entrypoint.sh"]
