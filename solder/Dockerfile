@@ -22,10 +22,6 @@ WORKDIR /var/www/technicsolder/
 # Install solder dependencies.
 RUN composer install --no-dev --no-interaction
 
-# Add gfs for easier file upload
-RUN curl -o /usr/local/bin/gfs -sSL "https://github.com/zlepper/gfs/releases/download/0.0.4/gfs-linux-x64" && \
-    chmod +x /usr/local/bin/gfs 
-
 # Allow using an external storage for postgres
 # Host used when connection to solder
 ENV SOLDER_HOST=solder.app \

@@ -25,6 +25,14 @@ services:
       - REPO_PASSWORD=password
     depends_on:
       - postgres
+  gfs:
+    build: ./gfs
+    image: leonime/gfs
+    environment:
+      - REPO_USER=username
+      - REPO_PASSWORD=password
+    volumes:
+    - solder_repo:/var/www/repo.solder
   nginx:
     image: nginx:1-alpine
     volumes:

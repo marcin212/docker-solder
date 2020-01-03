@@ -1,5 +1,5 @@
 upstream gfs {
-    server solder:8080;
+    server gfs:8080;
 }
 
 server {
