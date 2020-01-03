@@ -33,10 +33,13 @@ ENV SOLDER_HOST=solder.app \
     REPO_USER=solder\
     REPO_PASSWORD=solder
 COPY ./entrypoint.sh .
+COPY ./php_config.sh .
 
-# Copy setup scripts
+RUN sh ./php_config.sh
 
 # create the app user
+RUN addgroup -S www-data && adduser -S www-data -G www-data
+RUN chown -R www-data:www-data .
 
 # Actually configure solder
 ENTRYPOINT ["/var/www/technicsolder/entrypoint.sh"]
