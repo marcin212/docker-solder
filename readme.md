@@ -39,10 +39,29 @@ The main variables to be concerned about are the following:
 |Variable name|Default value|Description|
 |------|-------|------|
 |`SOLDER_HOST`|solder.app|The hostname that solder app should have|
+|`REPO_PASSWORD`|solder|The password used when uploading to the file repository|
+|`POSTGRES_USER`|none|The user to access the database|
+|`POSTGRES_PASSWORD`|none|The password for the database user|
+|`POSTGRES_DB`|none|The database to use|
+|`POSTGRES_HOST`|postgres|The database listening address|
+|`POSTGRES_PORT`|5432|The database listening port|
+
+### repo environment variables
+This are the environment required for the repo.
+
+|Variable name|Default value|Description|
+|------|-------|------|
 |`REPO_HOST`|repo.app|The hostname the file repo should have|
 |`REPO_USER`|solder|The username used when uploading to the file repository|
-|`REPO_PASSWORD`|solder|The password used when uploading to the file repository|
-|`POSTGRES_PASSWORD`|postgres|The password for the database. If you are not opening the database to the world, then you don't actually need to change this.|
+
+### repo environment variables
+This are the environment required for postgres container.
+
+|Variable name|Default value|Description|
+|------|-------|------|
+|`POSTGRES_USER`|none|The user to access the database|
+|`POSTGRES_PASSWORD`|none|The password for the database user|
+|`POSTGRES_DB`|none|The database to use|
 
 ## Volumes
 All of these volumes should be added to the host, this will ensure a smooth update when a new version of this container is out. 
