@@ -17,19 +17,17 @@ More information can be found at: <http://docs.solder.io/>
 First and foremost it's to be simple to configure. It should not require a PHD to be able to setup solder, yet there are quite a few gotchas to be aware of. There are quite a few solder containers in existence, but I have found that they either lack documentation, or have some other weird way of being setup that does not follow the official recommendations.
 
 # Quickstart
-This command starts your solder container for you. You only need to change the environment variables. Remove '-p 443:443' and '-p 8443:8443' from the command line if you do not need HTTPS.
+This command starts your solder container for you. You only need to change the environment variables. 
 
-```sh
+```shell script
 docker run -d --name=solder \
-    -p 80:80 -p 8080:8080 -p 443:443 -p 8443:8443 \
-    -v /data/docker/solder/database:/var/lib/postgresql/data \
+    -p 80:80 \
     -v /data/docker/solder/repo:/var/www/repo.solder \
     -v /data/docker/solder/storage:/var/www/technicsolder/app/storage \
+    -v /data/docker/solder/public:/var/www/technicsolder/public \
     -e "SOLDER_HOST=solder.example.com" \
     -e "REPO_HOST=repo.example.com" \
-    -e "REPO_USER=zlepper" \
-    -e "REPO_PASSWORD=SuperSecurePassword" \
-    zlepper/solder
+    leonime/solder
 ```
 
 # Configuration
