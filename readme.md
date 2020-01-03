@@ -34,7 +34,7 @@ docker run -d --name=solder \
 This container makes only the most minimal options available to ensure easier setup.
 
 ## Environment variables
-The main variables to be conserned about are the following:
+The main variables to be concerned about are the following:
 
 |Variable name|Default value|Description|
 |------|-------|------|
