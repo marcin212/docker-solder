@@ -18,9 +18,6 @@ services:
       - solder_repo:/var/www/repo.solder
       - solder_storage:/var/www/technicsolder/app/storage
       - solder_public:/var/www/technicsolder/public/
-    environment:
-      - SOLDER_HOST=solder.example.com
-      - REPO_HOST=repo.example.com
     depends_on:
       - postgres
   gfs:
