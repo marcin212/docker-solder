@@ -1,12 +1,10 @@
 # Requriements
 > Docker-capable Server
-> Ports 80 and 8080 to be opened; 443 and 8443 for HTTPS
+> Ports 80 and 8080 to be opened; 443 for HTTPS
 > 5 minutes of your time
 
 # Upcoming Features // Changes
-> TLSv1.3 support in NGINX; will require manual installation of OpenSSL v1.1.1
-> Add documentation on installation of Docker
-> More Love.
+> Certbot implementation.
 
 # What is Technic Solder?
 > Technic Solder is a server-side PHP application based on the Laravel Framework. Its main goal is to provide delta encoded files for the Technic Launcher to process. This can include any type of file. Another goal is to process file check-sums to ensure the receiver is obtaining unaltered files.
@@ -86,9 +84,6 @@ mkdir -p ".data/postgres/data"
 |-------|-------|------|
 |80|Solder http port. This is where you connection to solder. <br /> This should be linked if you want to be able to actually access solder(Which you want)|Link|
 |443|Solder https port. Optional; SSL encrypted connection to your solder server.|Link|
-|5432|PostgreSQL port. Do NOT open this to the world unless you intend to remotely access the database.|Don't link|
-|8080|GFS http port. You need to open this to be able to upload files|Link|
-|8443|GFS https port. Optional; you must enable this if you have linked port 443.|Link|
 
 # Stack
 This container is made of the following components:  
