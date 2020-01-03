@@ -1,19 +1,69 @@
-version: '2'
+version: '3.7'
+
 services:
-  solder:
-    image: zlepper/solder
-    container_name: solder
-    restart: unless-stopped
+  postgres:
+    image: postgres:12-alpine
     volumes:
-      - /data/docker/solder/database:/var/lib/postgresql/data
-      - /data/docker/solder/repo:/var/www/repo.solder
-      - /data/docker/solder/storage:/var/www/technicsolder/app/storage
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.configs/postgres/.env
+  solder:
+    build: ./solder
+    image: leonime/solder
+    container_name: solder
+    restart: on-failure
+    env_file:
+      - ./.configs/solder/.env
+    volumes:
+      - solder_repo:/var/www/repo.solder
+      - solder_storage:/var/www/technicsolder/app/storage
+      - solder_public:/var/www/technicsolder/public/
+    depends_on:
+      - postgres
+  gfs:
+    build: ./gfs
+    image: leonime/gfs
     environment:
-      - SOLDER_HOST=solder.example.com
-      - REPO_HOST=repo.example.com
       - REPO_USER=username
       - REPO_PASSWORD=password
+    volumes:
+    - solder_repo:/var/www/repo.solder
+  nginx:
+    image: nginx:1-alpine
+    volumes:
+      - ./.configs/nginx/solder.nginx:/etc/nginx/conf.d/solder.conf
+      - ./.configs/nginx/repo.nginx:/etc/nginx/conf.d/repo.conf
+      - ./.configs/nginx/up.nginx:/etc/nginx/conf.d/up.conf
+      - solder_public:/var/www/technicsolder/public/
+      - solder_repo:/var/www/repo.solder
     ports:
-      - "80:80"
-      - "8080:8080"
-      
+      - 80:80
+    depends_on:
+      - solder
+      - gfs
+
+volumes:
+  postgres_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/postgres/data
+      o: bind
+  solder_public:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/solder/public
+      o: bind
+  solder_repo:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/solder/repo
+      o: bind
+  solder_storage:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/solder/storage
+      o: bind

@@ -1,18 +1,12 @@
 server {
     listen 80; #IPv4
-    listen 443; #IPv4 over HTTPS
-    #listen [::]:80; #IPv6 Functionality, uncomment if neccessary
+    listen [::]:80; #IPv6
 
     # Host that will serve this project.
-    server_name     ENV_REPO_HOST;
-
-    # Useful logs for debug.
-    access_log      /var/log/nginx/repo.solder/access.log;
-    error_log       /var/log/nginx/repo.solder/error.log;
-    rewrite_log     on;
+    server_name repo.example.com;
 
     # The location of repo directory.
-    root            /var/www/repo.solder;
+    root /var/www/repo.solder;
     index index.php index.html index.htm;
 
     location / {
@@ -22,20 +16,20 @@ server {
         autoindex_exact_size off;
         autoindex_localtime on;
     }
-  
+
     # We don't need .ht files with nginx.
     location ~ /\.ht {
-            deny all;
+        deny all;
     }
 
     # Hide dot files/folders
     location ~ .*/\. {
-           return 403;
+        return 403;
     }
 
     # Set header expirations on per-project basis
     location ~* \.(?:ico|css|js|jpe?g|JPG|png|svg|woff)$ {
-            expires 365d;
+        expires 365d;
 
     }
 }
