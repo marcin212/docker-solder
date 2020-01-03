@@ -22,14 +22,6 @@ WORKDIR /var/www/technicsolder/
 # Install solder dependencies.
 RUN composer install --no-dev --no-interaction
 
-# Allow using an external storage for postgres
-# Host used when connection to solder
-ENV SOLDER_HOST=solder.app \
-    # Host used when connection to repo
-    REPO_HOST=repo.app\
-    REPO_USER=solder\
-    REPO_PASSWORD=solder
-
 # Copy scripts
 COPY ./entrypoint.sh .
 COPY ./php_config.sh .

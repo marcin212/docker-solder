@@ -21,8 +21,6 @@ services:
     environment:
       - SOLDER_HOST=solder.example.com
       - REPO_HOST=repo.example.com
-      - REPO_USER=username
-      - REPO_PASSWORD=password
     depends_on:
       - postgres
   gfs:
