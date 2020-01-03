@@ -66,12 +66,20 @@ This are the environment required for postgres container.
 ## Volumes
 All of these volumes should be added to the host, this will ensure a smooth update when a new version of this container is out. 
 
-|Volume path|Description|
-|------|------|
-|`/var/lib/postgresql/data`|All the database data|
-|`/var/www/repo.solder`|Storage location for uploaded mod files|
-|`/var/www/technicsolder/app/storage`|Various specific solder files|
-|`/var/www/technicsolder/public/storage`|Various specific solder files|
+|Local path|Container path|Description|
+|------|------|------|
+|`.data/postgres/data`|`/var/lib/postgresql/data/`|All the database data|
+|`.data/solder/repo`|`/var/www/repo.solder`|Storage location for uploaded mod files|
+|`.data/solder/storage`|`/var/www/technicsolder/app/storage`|Various specific solder files|
+|`.data/solder/public`|`/var/www/technicsolder/public/`|Various specific solder files|
+
+Here hare some commands to create the folder structure.
+```shell script
+mkdir -p ".data/solder/repo"
+mkdir -p ".data/solder/public"
+mkdir -p ".data/solder/storage"
+mkdir -p ".data/postgres/data"
+```
 
 ## Ports
 |Port number|Description|Recommendation|
