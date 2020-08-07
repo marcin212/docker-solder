@@ -4,7 +4,7 @@
 > 5 minutes of your time
 
 # Upcoming Features // Changes
-> Certbot implementation.
+> None for the moment, I'm open to suggestions.
 
 # What is Technic Solder?
 > Technic Solder is a server-side PHP application based on the Laravel Framework. Its main goal is to provide delta encoded files for the Technic Launcher to process. This can include any type of file. Another goal is to process file check-sums to ensure the receiver is obtaining unaltered files.
