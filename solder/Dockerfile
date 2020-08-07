@@ -19,6 +19,8 @@ RUN mv ./technicsolder/app/config-sample ./technicsolder/app/config
 # Changed working directory so composer can work without trouble
 WORKDIR /var/www/technicsolder/
 
+RUN sed -i.bak "s|\"mockery/mockery\": \"master@dev\"|\"mockery/mockery\": \"1.3.1\"|g" ./composer.json
+
 # Install solder dependencies.
 RUN composer install --no-dev --no-interaction  --prefer-dist --no-ansi --no-scripts --optimize-autoloader
 RUN composer clearcache
