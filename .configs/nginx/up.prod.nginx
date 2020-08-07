@@ -1,0 +1,73 @@
+upstream gfs {
+    server gfs:8080;
+}
+
+server {
+    listen [::]:80;
+    listen 80;
+    server_name up.example.com;
+
+    # Redirect all non-https requests
+    rewrite ^ https://$host$request_uri? permanent;
+}
+
+server {
+    listen [::]:443 ssl http2;
+    listen 443 ssl http2;
+
+    error_log /dev/stdout error;
+    access_log off;
+
+    server_name up.example.com;
+
+    # Certificate(s) and private key
+    ssl_certificate /etc/letsencrypt/live/certificates/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/certificates/privkey.pem;
+
+    # RFC-7919 recommended: https://wiki.mozilla.org/Security/Server_Side_TLS#ffdhe4096
+    # ssl_dhparam /etc/ssl/ffdhe4096.pem;
+
+    # Or, generate random dhparam
+    # openssl dhparam 4096 -out ./dhparam/dhparam-4096.pem
+    ssl_dhparam /etc/ssl/certs/dhparam-4096.pem;
+
+    ssl_protocols TLSv1.3 TLSv1.2;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers "ECDHE-ECDSA-AES128-GCM-SHA256 ECDHE-ECDSA-AES256-GCM-SHA384 ECDHE-ECDSA-AES128-SHA ECDHE-ECDSA-AES256-SHA ECDHE-ECDSA-AES128-SHA256 ECDHE-ECDSA-AES256-SHA384 ECDHE-RSA-AES128-GCM-SHA256 ECDHE-RSA-AES256-GCM-SHA384 ECDHE-RSA-AES128-SHA ECDHE-RSA-AES256-SHA ECDHE-RSA-AES128-SHA256 ECDHE-RSA-AES256-SHA384 DHE-RSA-AES128-GCM-SHA256 DHE-RSA-AES256-GCM-SHA384 DHE-RSA-AES128-SHA DHE-RSA-AES256-SHA DHE-RSA-AES128-SHA256 DHE-RSA-AES256-SHA256";
+    ssl_ecdh_curve secp384r1;
+
+    ssl_session_cache shared:TLS:2m;
+    ssl_buffer_size 4k;
+    ssl_session_timeout  60m;
+    ssl_session_tickets off;
+
+    # OCSP stapling
+    ssl_stapling on;
+    ssl_stapling_verify on;
+    ssl_trusted_certificate /etc/letsencrypt/live/certificates/fullchain.pem;
+    resolver 1.1.1.1 1.0.0.1 [2606:4700:4700::1111] [2606:4700:4700::1001]; # Cloudflare
+    resolver_timeout 5s;
+
+    # Set HSTS to 365 days
+    add_header Strict-Transport-Security 'max-age=31536000; includeSubDomains; preload' always;
+    add_header X-Frame-Options DENY;
+    add_header X-Content-Type-Options nosniff;
+    add_header X-XSS-Protection "1; mode=block";
+    add_header Expect-CT "max-age=0";
+
+    client_max_body_size 4G;
+
+    location / {
+        proxy_pass http://gfs/;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+        proxy_redirect off;
+    }
+
+    location ~ /\.well-known/acme-challenge {
+        allow all;
+        root /var/www/html;
+    }
+}
