@@ -1,3 +1,4 @@
+#!/bin/sh
 sed -i.bak "s|;error_log\s*=\s*log/php7/error.log|error_log = /proc/self/fd/2|g" /etc/php7/php-fpm.conf
 sed -i.bak "s|user\s*=\s*nobody|user = www-data|g" /etc/php7/php-fpm.d/www.conf
 sed -i.bak "s|group\s*=\s*nobody|group = www-data|g" /etc/php7/php-fpm.d/www.conf
