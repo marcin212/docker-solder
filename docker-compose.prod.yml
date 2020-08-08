@@ -54,7 +54,6 @@ services:
     depends_on:
       - nginx
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-    command: certonly --webroot -w /var/www/html --rsa-key-size 4096 --email lparra.dev@gmail.com --agree-tos --no-eff-email --force-renewal -d repo.example.com -d solder.example.com -d up.example.com
 
 volumes:
   acme_challenge:
