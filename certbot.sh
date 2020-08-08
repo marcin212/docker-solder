@@ -1,6 +1,7 @@
 #!/bin/sh
 echo "Making sure server is down"
 sudo -E docker-compose down -v
+sudo -E docker-compose -f docker-compose.certbot.yml down -v
 sudo -E docker-compose -f docker-compose.prod.yml down -v
 
 echo "Creating folder structure"
@@ -17,12 +18,13 @@ sudo openssl req -x509 -nodes -newkey rsa:4096 -days 1 -keyout "$FOLDER_PATH/pri
 sudo openssl dhparam -out ./.data/dhparam/dhparam-4096.pem 4096
 
 echo "Start the services"
-sudo -E docker-compose -f docker-compose.yml up -d
+sudo -E docker-compose -f docker-compose.certbot.yml up -d
 
 echo "Deleting the fake certificates"
 sudo rm -rfv .data/certbot/etc/*
 
 echo "Restarting certbot so that in can generate genuine ones"
-sudo -E docker-compose -f docker-compose.prod.yml up -d --force-recreate --no-deps certbot
+sed -i "s| --staging||g" ./docker-compose.certbot.yml
+sudo -E docker-compose -f docker-compose.certbot.yml up -d --force-recreate --no-deps certbot
 echo "Restarting nginx so it can load the certificates."
-sudo -E docker-compose -f docker-compose.prod.yml up -d --force-recreate --no-deps nginx
+sudo -E docker-compose -f docker-compose.certbot.yml up -d --force-recreate --no-deps nginx
