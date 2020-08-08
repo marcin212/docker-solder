@@ -1,0 +1,112 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: postgres:12-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.configs/postgres/.env
+  solder:
+    image: leonime/solder
+    container_name: solder
+    restart: on-failure
+    env_file:
+      - ./.configs/solder/.env
+    volumes:
+      - solder_repo:/var/www/repo.solder
+      - solder_storage:/var/www/technicsolder/app/storage
+      - solder_public:/var/www/technicsolder/public/
+    depends_on:
+      - postgres
+  gfs:
+    image: leonime/gfs
+    env_file:
+      - ./.configs/solder/.env
+    volumes:
+      - solder_repo:/var/www/repo.solder
+  nginx:
+    image: nginx:1-alpine
+    volumes:
+      - ./.configs/nginx/repo.prod.nginx:/etc/nginx/conf.d/repo.conf
+      - ./.configs/nginx/solder.prod.nginx:/etc/nginx/conf.d/solder.conf
+      - ./.configs/nginx/up.prod.nginx:/etc/nginx/conf.d/up.conf
+      - acme_challenge:/var/www/html
+      - certbot_etc:/etc/letsencrypt
+      - certbot_var:/var/lib/letsencrypt
+      - certbot_log:/var/log/letsencrypt
+      - dhparam:/etc/ssl/certs
+      - solder_public:/var/www/technicsolder/public/
+      - solder_repo:/var/www/repo.solder
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - solder
+      - gfs
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - certbot_etc:/etc/letsencrypt
+      - certbot_log:/var/log/letsencrypt/
+      - certbot_var:/var/lib/letsencrypt
+      - acme_challenge:/var/www/html
+    depends_on:
+      - nginx
+    command: certonly --webroot -w /var/www/html --rsa-key-size 4096 --email your.email@email.com --agree-tos --no-eff-email --force-renewal --staging -d repo.example.com -d solder.example.com -d up.example.com
+
+volumes:
+  acme_challenge:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/certbot/challenge
+      o: bind
+  certbot_etc:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/certbot/etc
+      o: bind
+  certbot_log:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/certbot/log
+      o: bind
+  certbot_var:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/certbot/var
+      o: bind
+  dhparam:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/dhparam/
+      o: bind
+  postgres_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/postgres/data
+      o: bind
+  solder_public:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/solder/public
+      o: bind
+  solder_repo:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/solder/repo
+      o: bind
+  solder_storage:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/.data/solder/storage
+      o: bind

@@ -23,9 +23,8 @@ services:
   gfs:
     build: ./gfs
     image: leonime/gfs
-    environment:
-      - REPO_USER=username
-      - REPO_PASSWORD=password
+    env_file:
+      - ./.configs/solder/.env
     volumes:
     - solder_repo:/var/www/repo.solder
   nginx:
