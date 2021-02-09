@@ -9,9 +9,9 @@ RUN apk --no-cache add composer php7-cli php7-curl php7-mcrypt php7-apcu php7-fp
                        php7-dom php7-tokenizer php7-ctype php7-pdo php7-pgsql php7-pdo_pgsql php7-gd
 
 # Download and extract solder
-RUN wget http://github.com/TechnicPack/TechnicSolder/archive/master.tar.gz -O - | tar -xzf -
+RUN wget https://github.com/TechnicPack/TechnicSolder/archive/v0.7.5.2.tar.gz -O - | tar -xzf -
 # Better file naming
-RUN mv ./TechnicSolder-master ./technicsolder
+RUN mv ./TechnicSolder-0.7.5.2 ./technicsolder
 
 # Create default configs.
 RUN mv ./technicsolder/app/config-sample ./technicsolder/app/config
